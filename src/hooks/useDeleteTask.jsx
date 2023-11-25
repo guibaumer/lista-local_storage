@@ -1,12 +1,17 @@
 
-export const useDeleteTask = async(taskText) => {
+export const useDeleteTask = async(id) => {
 
-    const storageTasks = await JSON.parse(localStorage.getItem('tasks'))
+    const storageTasks = await JSON.parse(localStorage.getItem('tasks'));
+    let deleted = false;
     // console.log(storageTasks)
     // let tasksArray = [];
 
     const tasksArray = storageTasks.filter((task) => {
-        if(task !== taskText) return task;
+        if(task.id !== id) {
+            return task;
+        } else {
+            deleted = task.name;
+        }
         // tasksArray.push(task);
     });
 
@@ -14,5 +19,5 @@ export const useDeleteTask = async(taskText) => {
     console.log(jsonTasks)
     localStorage.setItem('tasks', jsonTasks);
 
-    return taskText;
+    return deleted;
 }

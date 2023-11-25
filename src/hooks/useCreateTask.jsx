@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export const useCreateTask = async(taskText) => {
 
     const storageTasks = JSON.parse(localStorage.getItem('tasks'))
@@ -8,16 +10,16 @@ export const useCreateTask = async(taskText) => {
         let duplicateTask = false;
 
         storageTasks.forEach((task) => {
-            if(task === taskText) {
-                duplicateTask = task;
+            if(task.name === taskText) {
+                duplicateTask = task.name;
             }
         });
 
         if(duplicateTask) return 'ERROR';
 
-        tasksArray = [taskText, ...storageTasks];
+        tasksArray = [{name: taskText, id: uuidv4() }, ...storageTasks];
     } else {
-        tasksArray = [taskText];
+        tasksArray = [{name: taskText, id: uuidv4()}];
     }  
 
     const jsonTasks = JSON.stringify(tasksArray);

@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useCreateTask } from './hooks/useCreateTask';
 import { useDeleteTask } from './hooks/useDeleteTask';
 import { useEditTask } from './hooks/useEditTask';
-
 import { MdDelete } from "react-icons/md";
 import { AiTwotoneEdit } from "react-icons/ai";
-
 import './App.css'
+
+// import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [newTask, setNewTask] = useState('');
@@ -39,10 +39,10 @@ function App() {
     setError('');
   }
 
-  const handleDelete = async(e) => {
-    const taskText = e.target.parentNode.parentNode.innerText.trim();
+  const handleDelete = async(id) => {
+    // const taskText = await e.target.parentNode.parentNode.innerText.trim();
 
-    const justDeletedTask = await useDeleteTask(taskText);
+    const justDeletedTask = await useDeleteTask(id);
 
     setDeletedTask(justDeletedTask);
   }
@@ -84,12 +84,12 @@ function App() {
 
         <ul>
           {tasks && tasks.map((task) => (
-            <li key={task}>
-              {task}
+            <li key={task.id}>
+              {task.name}
               
               <p className='icons-p'>
                 <AiTwotoneEdit className='edit' onClick={handleEdit} />
-                <MdDelete className='delete' onClick={handleDelete} />
+                <MdDelete className='delete' onClick={() => handleDelete(task.id)} />
               </p>
 
             </li>

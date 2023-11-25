@@ -6,8 +6,8 @@ export const useEditTask = (newTask, oldTask) => {
     let tasksArray = [];
 
     storageTasks.filter((task) => {
-        if(task === oldTask) {
-            task = newTask;
+        if(task.name === oldTask) {
+            task.name = newTask;
         }
 
         tasksArray.push(task);
