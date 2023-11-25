@@ -14,6 +14,7 @@ function App() {
   const [reload, setReload] = useState(false);
   const [deletedTask, setDeletedTask] = useState('');
   const [taskToEdit, setTaskToEdit] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -24,6 +25,10 @@ function App() {
       await useEditTask(newTask, taskToEdit);
     } else {
       const task = await useCreateTask(newTask);
+      if(task === 'ERROR') {
+        setError('Tarefa já existe.');
+        return;
+      }
     }
 
     setReload(!reload);
@@ -31,12 +36,13 @@ function App() {
     setTaskToEdit('');
     setNewTask('');
     setDeletedTask('');
+    setError('');
   }
 
   const handleDelete = async(e) => {
-    const text = e.target.parentNode.parentNode.innerText;
+    const taskText = e.target.parentNode.parentNode.innerText.trim();
 
-    const justDeletedTask = await useDeleteTask(text);
+    const justDeletedTask = await useDeleteTask(taskText);
 
     setDeletedTask(justDeletedTask);
   }
@@ -59,7 +65,6 @@ function App() {
 
     if(storageTasks) {
       setTasks(storageTasks);
-      console.log(tasks)
     }
 
   }, [reload, deletedTask]);
@@ -83,10 +88,8 @@ function App() {
               {task}
               
               <p className='icons-p'>
-                {/* <input className='edit' onClick={handleEdit} type="button" value="EDITAR" /> */}
                 <AiTwotoneEdit className='edit' onClick={handleEdit} />
                 <MdDelete className='delete' onClick={handleDelete} />
-                {/* <input className='delete' onClick={handleDelete} type="button" value="APAGAR" /> */}
               </p>
 
             </li>
@@ -97,6 +100,10 @@ function App() {
           <p className='undo-p'>
             <button className='undo' onClick={handleUndo}>REFAZER</button>
           </p>
+        )}
+
+        {error && (
+          <p>{error}</p>
         )}
         
       </section>
