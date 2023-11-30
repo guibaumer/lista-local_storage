@@ -20,8 +20,18 @@ function App() {
     e.preventDefault();
 
     if(!newTask) return;
+    if(newTask === taskToEdit) return;
 
     if(taskToEdit) {
+
+      for(let task of tasks) {
+
+        if(task.name === newTask) {
+          setNewTask('');
+          return setError('Tarefa já existe.');
+        }
+        
+      }
       await useEditTask(newTask, taskToEdit);
     } else {
       const task = await useCreateTask(newTask);
